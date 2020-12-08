@@ -33,6 +33,8 @@ container_log_args+=("--mount=type=bind,source=${USER_STORE},destination=${USER_
 container_log_args+=("--mount=type=bind,source=/tmp,destination=/tmp")
 
 var_crucible="/var/lib/crucible"
+default_runs_dir="$var_crucible/run" # default location where rickshaw stores runs
+default_es="localhost:9200" # default location for ES
 podman_pull="podman pull"
 podman_run="podman run"
 
