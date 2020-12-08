@@ -168,6 +168,6 @@ for num_pods in $pod_sizes; do
     fi
 
     tags="sdn:$network_type,mtu:$network_mtu,rcos:$rcos,kernel:$kernel,irq:$irq"
-    tags="$tags,topo:$topo,pods-per-worker:$num_pods,worker_pairs:$worker_pairs"
+    tags="$tags,topo:$topo,pods-per-worker:$num_pods,worker_pairs:$host_pairs"
     crucible run uperf --tags $tags --num-samples=$samples $endpoint_opt
 done
