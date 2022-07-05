@@ -253,16 +253,19 @@ function post_process_run() {
 
         if [ ${RC} == 0 ]; then
             cdm_query_cmd="${CRUCIBLE_HOME}/subprojects/core/CommonDataModel/queries/cdmq/get-result-summary.sh"
-            cdm_query_cmd+=" --run=${this_id}"
+            cdm_query_cmd+=" --run=${this_id} --output-dir ${RUN_DIR}/run --output-format txt,html"
             echo "Generating benchmark summary report"
             result_summary="${RUN_DIR}/run/result-summary.txt"
-            $podman_run --name crucible-get-result-${SESSION_ID} "${container_common_args[@]}" "${container_rs_args[@]}" $CRUCIBLE_CONTAINER_IMAGE $cdm_query_cmd > ${result_summary}
+            $podman_run --name crucible-get-result-${SESSION_ID} "${container_common_args[@]}" "${container_rs_args[@]}" $CRUCIBLE_CONTAINER_IMAGE $cdm_query_cmd
             RC=$?
-            cat ${result_summary}
             if [ ${RC} == 0 ]; then
+                RUN_URL=`echo $RUN_DIR | sed -e 'sX/var/lib/crucibleXX'`
+                RUN_URL="`hostname`:8080${RUN_URL}"
                 echo
                 echo "Benchmark summary is complete and can be found in:"
                 echo "${RUN_DIR}/run/result-summary.txt"
+                echo "   and"
+                echo "${RUN_URL}/run/result-summary.html"
             else
                 echo "ERROR: Could not generate benchmark summary"
                 RC=1
